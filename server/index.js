@@ -24,3 +24,5 @@ if (process.argv[2] !== 'DEV') {
 app.listen(PORT, () => {
   console.log(`running om port: ${PORT}`);
 });
+
+module.exports.app = app;
