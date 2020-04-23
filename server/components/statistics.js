@@ -33,9 +33,22 @@ const evalLanguages = async (username) => {
     }
   });
 
+  let total = Object.values(languages).reduce((acc, curr) => acc + curr);
+
+  let languageInfo = [];
+  for (const language in languages) {
+    languageInfo.push({
+      name: language,
+      sum: languages[language],
+      percentage: languages[language] / total,
+      label: `${language}(${Math.round(languages[language] * 100 / total)}%)`,
+    });
+  }
+
   return {
     projects: languagesData.length,
-    languages,
+    languages: languageInfo,
+    total,
   };
 };
 
