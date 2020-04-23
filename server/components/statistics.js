@@ -1,16 +1,18 @@
 const { request } = require('./network.js');
 require('dotenv').config();
 
-const evalLanguages = async (username) => {
-  const repos = await request({
+const getGithubRepoData = async (username) => {
+  return await request({
     method: 'get',
     url: `https://api.github.com/users/${username}/repos`,
     headers: {
       Authorization: `token ${process.env.TOKEN}`,
     },
   });
+};
 
-  let languagesData = repos.map((repo) => {
+const getLanguageData = (repos) => {
+  return repos.map((repo) => {
     return request({
       method: 'get',
       url: repo['languages_url'],
@@ -19,11 +21,11 @@ const evalLanguages = async (username) => {
       },
     });
   });
+};
 
-  languagesData = await Promise.all(languagesData);
-
+const mergeLanguageData = (data) => {
   let languages = {};
-  languagesData.forEach((repo) => {
+  data.forEach((repo) => {
     for (const language in repo) {
       if (languages[language] === undefined) {
         languages[language] = repo[language];
@@ -32,21 +34,34 @@ const evalLanguages = async (username) => {
       }
     }
   });
+  return languages;
+};
 
-  let total = Object.values(languages).reduce((acc, curr) => acc + curr);
-
+const calcLanguageInfo = (languages, total) => {
+  // prettier-ignore
+  const percentage = (sum) => Math.round(sum * 100 / total);
   let languageInfo = [];
   for (const language in languages) {
     languageInfo.push({
       name: language,
       sum: languages[language],
-      percentage: languages[language] / total,
-      label: `${language}(${Math.round(languages[language] * 100 / total)}%)`,
+      fraction: languages[language] / total,
+      label: `${language}(${percentage(languages[language])}%)`,
     });
   }
+  return languageInfo;
+};
 
+const evalLanguages = async (username) => {
+  const repos = await getGithubRepoData(username);
+  let languageData = getLanguageData(repos);
+  languageData = await Promise.all(languageData);
+  const languages = mergeLanguageData(languageData);
+  // prettier-ignore
+  const total = Object.values(languages).reduce((acc, curr) => acc + curr);
+  const languageInfo = calcLanguageInfo(languages, total);
   return {
-    projects: languagesData.length,
+    projects: languageData.length,
     languages: languageInfo,
     total,
   };
