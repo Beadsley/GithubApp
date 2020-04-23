@@ -1,0 +1,11 @@
+# config
+.env
+.eslintrc.json
+
+# misc
+.DS_Store
+
+# dependencies
+/node_modules
+
+

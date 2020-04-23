@@ -1,0 +1,24 @@
+{
+  "name": "githubapp",
+  "version": "1.0.0",
+  "description": "app using the github api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Beadsley/GithubApp.git"
+  },
+  "author": "Dan Beadleson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Beadsley/GithubApp/issues"
+  },
+  "homepage": "https://github.com/Beadsley/GithubApp#readme",
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0"
+  }
+}
