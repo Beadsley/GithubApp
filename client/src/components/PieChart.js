@@ -1,81 +1,83 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
   Chart,
   PieSeries,
   Title,
-  Legend
+  Legend,
 } from '@devexpress/dx-react-chart-material-ui';
-  
 
 import { Animation } from '@devexpress/dx-react-chart';
 
 const data = [
-  { country: 'JavaScript', area: 54530 },
-  { country: 'CSS', area: 3342 },
-  { country: 'HTML', area: 1700 },
-  { country: 'Java', area: 88413 },
+  {
+    name: 'JavaScript',
+    sum: 54530,
+    fraction: 0.3684832922255634,
+    label: 'JavaScript(37%)',
+  },
+  {
+    name: 'CSS',
+    sum: 3342,
+    fraction: 0.022583369936142177,
+    label: 'CSS(2%)',
+  },
+  {
+    name: 'HTML',
+    sum: 1700,
+    fraction: 0.011487650775416428,
+    label: 'HTML(1%)',
+  },
+  {
+    name: 'Java',
+    sum: 88413,
+    fraction: 0.597445687062878,
+    label: 'Java(60%)',
+  },
 ];
 
-const legendRootStyle = {
+const styles = {
+  legendRoot: {
     display: 'flex',
     margin: 'auto',
     flexDirection: 'row',
-  };
-  const LegendRoot = props => (
-    <Legend.Root {...props} style={legendRootStyle} />
-  );
-  
-  const legendItemStyle = {
+  },
+  legendItem: {
     flexDirection: 'column',
     marginLeft: '-2px',
     marginRight: '-2px',
-  };
-  const LegendItem = props => (
-    <Legend.Item {...props} style={legendItemStyle} />
-  );
-  
-  const legendLabelStyle = {
+  },
+  legendLabel: {
     whiteSpace: 'nowrap',
-  };
-  const LegendLabel = props => (
-    <Legend.Label {...props} style={legendLabelStyle} />
+  },
+};
+
+export default function PieChart() {
+  const [chartData, setChartData] = useState(data);
+
+  const LegendRoot = (props) => (
+    <Legend.Root {...props} style={styles.legendRoot} />
   );
-  
-export default class PieChart extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  const LegendItem = (props) => (
+    <Legend.Item {...props} style={styles.legendItem} />
+  );
+  const LegendLabel = (props) => (
+    <Legend.Label {...props} style={styles.legendLabel} />
+  );
 
-    this.state = {
-      data,
-    };
-  }
-
-  render() {
-    const { data: chartData } = this.state;
-
-    return (
-      <Paper>
-        <Chart
-          data={chartData}
-        >
-          <PieSeries
-            valueField="area"
-            argumentField="country"
-          />
-                   <Legend
-            position="bottom"
-            rootComponent={LegendRoot}
-            itemComponent={LegendItem}
-            labelComponent={LegendLabel}
-          />
-          <Title
-            text="Area of Countries"
-          />          
-          <Animation />
-        </Chart>
-        
-      </Paper>
-    );
-  }
+  return (
+    <Paper>
+      <Chart data={chartData}>
+        <PieSeries valueField='sum' argumentField='label' />
+        <Legend
+          position='bottom'
+          rootComponent={LegendRoot}
+          itemComponent={LegendItem}
+          labelComponent={LegendLabel}
+        />
+        <Title text='Github Languages' />
+        <Animation />
+      </Chart>
+    </Paper>
+  );
 }
