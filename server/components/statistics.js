@@ -1,27 +1,27 @@
 const { request } = require('./network.js');
 require('dotenv').config();
 
-const languages = async (username) => {
+const evalLanguages = async (username) => {
   const repos = await request({
     method: 'get',
     url: `https://api.github.com/users/${username}/repos`,
     headers: {
-      Authorization: process.env.TOKEN,
+      Authorization: `token ${process.env.TOKEN}`,
     },
   });
-  
+
   let languagesData = repos.map((repo) => {
     return request({
       method: 'get',
       url: repo['languages_url'],
       headers: {
-        Authorization: process.env.TOKEN,
+        Authorization: `token ${process.env.TOKEN}`,
       },
     });
   });
-  
+
   languagesData = await Promise.all(languagesData);
-  
+
   let languages = {};
   languagesData.forEach((repo) => {
     for (const language in repo) {
@@ -40,5 +40,5 @@ const languages = async (username) => {
 };
 
 module.exports = {
-  languages,
+  evalLanguages,
 };
