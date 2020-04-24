@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  InputBase,
-} from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import InfoIcon from '@material-ui/icons/Info';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import config from '../config';
 import InfoDialog from './InfoDialog';
 import Iconpopover from './Iconpopover';
+import { useDispatch } from 'react-redux';
+import { addUsername } from '../actions/userActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchAppBar() {
   const classes = useStyles();
-  const [userInput, setUserInput] = useState('');
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [popoverMessage, setPopoverMessage] = React.useState(undefined);
   const [showInfo, setShowInfo] = React.useState(false);
@@ -104,7 +101,7 @@ export default function SearchAppBar() {
   function keyPress(e) {
     if (e.keyCode == 13) {
       console.log('value', e.target.value);
-      //fetch data
+      dispatch(addUsername(e.target.value));
     }
   }
 
@@ -133,7 +130,6 @@ export default function SearchAppBar() {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => setUserInput(e.target.value)}
               onKeyDown={keyPress}
             />
           </div>
