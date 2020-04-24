@@ -14,7 +14,6 @@ import { languageStatsLoading, hasErrored } from '../actions/languageStatsAction
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginBottom: 22,
   },
   search: {
     position: 'relative',

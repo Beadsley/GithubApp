@@ -7,6 +7,9 @@ import { languageStatistics } from '../actions/apiActions';
 import config from '../config';
 
 const styles = {
+  root: {
+    marginTop: 22,
+  },
   legendRoot: {
     display: 'flex',
     margin: 'auto',
@@ -38,7 +41,7 @@ export default function PieChart() {
   useEffect(() => {
     if (areLoading === false) {
       setChartData(data.languages.mostused);
-      setTitle(`${username} most used languages from ${data.projects} projects.`)
+      setTitle(`${username} most used languages from ${data.projects} projects.`);
     }
   }, [areLoading]);
 
@@ -46,20 +49,19 @@ export default function PieChart() {
   const LegendItem = (props) => <Legend.Item {...props} style={styles.legendItem} />;
   const LegendLabel = (props) => <Legend.Label {...props} style={styles.legendLabel} />;
 
-    return (
-      <Paper>
-        <Chart data={chartData}>
-          <PieSeries valueField='sum' argumentField='label' />
-          <Legend
-            position='bottom'
-            rootComponent={LegendRoot}
-            itemComponent={LegendItem}
-            labelComponent={LegendLabel}
-          />
-          <Title text={title} />
-          <Animation />
-        </Chart>
-      </Paper>
-    );
-  
+  return (
+    <Paper style={styles.root}>
+      <Chart data={chartData}>
+        <PieSeries valueField='sum' argumentField='label' />
+        <Legend
+          position='bottom'
+          rootComponent={LegendRoot}
+          itemComponent={LegendItem}
+          labelComponent={LegendLabel}
+        />
+        <Title text={title} />
+        <Animation />
+      </Chart>
+    </Paper>
+  );
 }
