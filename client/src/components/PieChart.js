@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
   Chart,
@@ -6,8 +6,9 @@ import {
   Title,
   Legend,
 } from '@devexpress/dx-react-chart-material-ui';
-
 import { Animation } from '@devexpress/dx-react-chart';
+import { useSelector, useDispatch } from 'react-redux';
+import { languageStatistics } from '../actions/apiActions';
 
 const data = [
   {
@@ -54,6 +55,14 @@ const styles = {
 
 export default function PieChart() {
   const [chartData, setChartData] = useState(data);
+  const { username } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (username !== null) {
+      dispatch(languageStatistics());
+    }
+  }, [username]);
 
   const LegendRoot = (props) => (
     <Legend.Root {...props} style={styles.legendRoot} />

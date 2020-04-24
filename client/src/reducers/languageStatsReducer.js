@@ -9,9 +9,9 @@ export function languageStatsLoading(state = true, action) {
   }
 }
 
-export function updateLanguageStats(state = [], action) {
+export function updateLanguageStats(state = {}, action) {
   switch (action.type) {
-    case 'UPDATE_PATIENT_STATISTICS':
+    case 'UPDATE_LANGUAGE_STATS':
       return action.stats;
     default:
       return state;

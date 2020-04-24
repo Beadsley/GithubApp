@@ -100,7 +100,6 @@ export default function SearchAppBar() {
 
   function keyPress(e) {
     if (e.keyCode == 13) {
-      console.log('value', e.target.value);
       dispatch(addUsername(e.target.value));
     }
   }
