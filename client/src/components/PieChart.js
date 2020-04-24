@@ -10,10 +10,10 @@ import { Animation } from '@devexpress/dx-react-chart';
 import { useSelector, useDispatch } from 'react-redux';
 import { languageStatistics } from '../actions/apiActions';
 
-const data = [
+const mockData = [
   {
-    name: 'JavaScript',
-    sum: 54530,
+    name: 'Python',
+    sum: 5453,
     fraction: 0.3684832922255634,
     label: 'JavaScript(37%)',
   },
@@ -24,8 +24,8 @@ const data = [
     label: 'CSS(2%)',
   },
   {
-    name: 'HTML',
-    sum: 1700,
+    name: 'JavaScript',
+    sum: 17000,
     fraction: 0.011487650775416428,
     label: 'HTML(1%)',
   },
@@ -54,8 +54,9 @@ const styles = {
 };
 
 export default function PieChart() {
-  const [chartData, setChartData] = useState(data);
+  const [chartData, setChartData] = useState(mockData);
   const { username } = useSelector((state) => state.user);
+  const { areLoading, data } = useSelector((state) => state.languageStatistics);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -74,19 +75,38 @@ export default function PieChart() {
     <Legend.Label {...props} style={styles.legendLabel} />
   );
 
-  return (
-    <Paper>
-      <Chart data={chartData}>
-        <PieSeries valueField='sum' argumentField='label' />
-        <Legend
-          position='bottom'
-          rootComponent={LegendRoot}
-          itemComponent={LegendItem}
-          labelComponent={LegendLabel}
-        />
-        <Title text='Github Languages' />
-        <Animation />
-      </Chart>
-    </Paper>
-  );
+  if (areLoading === false) {
+    const title = `${username} most used languages from ${data.projects} projects.`
+    return (
+      <Paper>
+        <Chart data={data.languages}>
+          <PieSeries valueField='sum' argumentField='label' />
+          <Legend
+            position='bottom'
+            rootComponent={LegendRoot}
+            itemComponent={LegendItem}
+            labelComponent={LegendLabel}
+          />
+          <Title text={title} />
+          <Animation />
+        </Chart>
+      </Paper>
+    );
+  } else {
+    return (
+      <Paper>
+        <Chart data={chartData}>
+          <PieSeries valueField='sum' argumentField='label' />
+          <Legend
+            position='bottom'
+            rootComponent={LegendRoot}
+            itemComponent={LegendItem}
+            labelComponent={LegendLabel}
+          />
+          <Title text='Github Languages' />
+          <Animation />
+        </Chart>
+      </Paper>
+    );
+  }
 }
