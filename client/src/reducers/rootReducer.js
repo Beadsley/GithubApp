@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import popover from './popoverReducer';
+import languageStatistics from './languageStatsReducer';
 
 const rootReducer = combineReducers({
-  popover,
+  languageStatistics
 });
 
 export default rootReducer;
