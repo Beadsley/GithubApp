@@ -86,7 +86,7 @@ export default function SearchAppBar() {
   const classes = useStyles();
   const [userInput, setUserInput] = useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [popupMessage, setPopupMessage] = React.useState(null);
+  const [popupMessage, setPopupMessage] = React.useState(undefined);
   const open = Boolean(anchorEl);
 
   const handlePopoverOpen = (event, icon) => {
