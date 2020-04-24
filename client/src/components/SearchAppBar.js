@@ -65,12 +65,14 @@ export default function SearchAppBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [userInput, setUserInput] = React.useState('');
   const [popoverMessage, setPopoverMessage] = React.useState(undefined);
   const [showInfo, setShowInfo] = React.useState(false);
   const open = Boolean(anchorEl);
 
   const handlePopoverOpen = (event, icon) => {
     setAnchorEl(event.currentTarget);
+
     if (icon === 'info') {
       setPopoverMessage(config.ENUMS.UI.INFO_POPOVER);
     } else if (icon === 'github') {
@@ -78,23 +80,17 @@ export default function SearchAppBar() {
     }
   };
 
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleInfoOpen = () => {
-    setShowInfo(true);
-  };
-
-  const handleInfoClose = () => {
-    setShowInfo(false);
-  };
+  const handlePopoverClose = () => setAnchorEl(null);
+  const handleInfoOpen = () => setShowInfo(true);
+  const handleInfoClose = () => setShowInfo(false);
+  const handleUserInput = (e) => setUserInput(e.target.value);
 
   function keyPress(e) {
     if (e.keyCode === 13) {
       dispatch(languageStatsLoading(true));
       dispatch(hasErrored(false));
       dispatch(addUsername(e.target.value));
+      setUserInput('');
     }
   }
 
@@ -117,6 +113,7 @@ export default function SearchAppBar() {
               <SearchIcon />
             </div>
             <InputBase
+              value={userInput}
               placeholder='Search…'
               classes={{
                 root: classes.inputRoot,
@@ -124,6 +121,7 @@ export default function SearchAppBar() {
               }}
               inputProps={{ 'aria-label': 'search' }}
               onKeyDown={keyPress}
+              onChange={handleUserInput}
             />
           </div>
           <div className={classes.iconContainer} className={classes.icon}>
