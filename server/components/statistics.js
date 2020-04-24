@@ -37,7 +37,8 @@ const mergeLanguageData = (data) => {
   return languages;
 };
 
-const total = (languages) => Object.values(languages).reduce((acc, curr) => acc + curr);
+const total = (languages) =>
+  Object.values(languages).reduce((acc, curr) => acc + curr, 0);
 
 const percentage = (sum, total) => Math.round((sum * 100) / total);
 
@@ -69,6 +70,10 @@ const calcLanguageInfo = (languages, total) => {
 
 const evalLanguages = async (username) => {
   const repos = await getGithubRepoData(username);
+  if (repos.length === 0) {
+    throw new Error('No repositories found');
+  }
+
   let languageData = getLanguageData(repos);
   languageData = await Promise.all(languageData);
   const languages = mergeLanguageData(languageData);
