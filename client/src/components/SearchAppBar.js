@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, IconButton, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -9,19 +9,12 @@ import InfoDialog from './InfoDialog';
 import Iconpopover from './Iconpopover';
 import { useDispatch } from 'react-redux';
 import { addUsername } from '../actions/userActions';
+import { languageStatsLoading, hasErrored } from '../actions/languageStatsActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+    marginBottom: 22,
   },
   search: {
     position: 'relative',
@@ -67,18 +60,23 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     marginLeft: 'auto',
   },
+  ancor: {
+    color: 'white',
+  },
 }));
 
 export default function SearchAppBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [userInput, setUserInput] = React.useState('');
   const [popoverMessage, setPopoverMessage] = React.useState(undefined);
   const [showInfo, setShowInfo] = React.useState(false);
   const open = Boolean(anchorEl);
 
   const handlePopoverOpen = (event, icon) => {
     setAnchorEl(event.currentTarget);
+
     if (icon === 'info') {
       setPopoverMessage(config.ENUMS.UI.INFO_POPOVER);
     } else if (icon === 'github') {
@@ -86,21 +84,17 @@ export default function SearchAppBar() {
     }
   };
 
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleInfoOpen = () => {
-    setShowInfo(true);
-  };
-
-  const handleInfoClose = () => {
-    setShowInfo(false);
-  };
+  const handlePopoverClose = () => setAnchorEl(null);
+  const handleInfoOpen = () => setShowInfo(true);
+  const handleInfoClose = () => setShowInfo(false);
+  const handleUserInput = (e) => setUserInput(e.target.value);
 
   function keyPress(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
+      dispatch(languageStatsLoading(true));
+      dispatch(hasErrored(false));
       dispatch(addUsername(e.target.value));
+      setUserInput('');
     }
   }
 
@@ -108,21 +102,24 @@ export default function SearchAppBar() {
     <div className={classes.root}>
       <AppBar position='static'>
         <Toolbar>
-          <IconButton
-            onClick={'handleClick'}
-            color='inherit'
-            aria-owns={open ? 'mouse-over-popover' : undefined}
-            aria-haspopup='true'
-            onMouseEnter={(e) => handlePopoverOpen(e, 'github')}
-            onMouseLeave={handlePopoverClose}
-          >
-            <GitHubIcon />
-          </IconButton>
+          <a className={classes.ancor} href={config.URL.github}>
+            <IconButton
+              onClick={'handleClick'}
+              color='inherit'
+              aria-owns={open ? 'mouse-over-popover' : undefined}
+              aria-haspopup='true'
+              onMouseEnter={(e) => handlePopoverOpen(e, 'github')}
+              onMouseLeave={handlePopoverClose}
+            >
+              <GitHubIcon />
+            </IconButton>
+          </a>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
+              value={userInput}
               placeholder='Search…'
               classes={{
                 root: classes.inputRoot,
@@ -130,6 +127,7 @@ export default function SearchAppBar() {
               }}
               inputProps={{ 'aria-label': 'search' }}
               onKeyDown={keyPress}
+              onChange={handleUserInput}
             />
           </div>
           <div className={classes.iconContainer} className={classes.icon}>

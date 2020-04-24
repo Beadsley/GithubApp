@@ -20,7 +20,7 @@ export function updateLanguageStats(state = {}, action) {
 export function hasErrored(state = false, action) {
   switch (action.type) {
     case 'HAS_ERRORED':
-      return true;
+      return action.errored;
     default:
       return state;
   }
