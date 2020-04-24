@@ -37,16 +37,31 @@ const mergeLanguageData = (data) => {
   return languages;
 };
 
+const total = (languages) => Object.values(languages).reduce((acc, curr) => acc + curr);
+
+const percentage = (sum, total) => Math.round((sum * 100) / total);
+
+const filterLanguages = (languages) => {
+  let additionalLanguages = {};
+  for (const language in languages) {
+    const languagePercentage = percentage(languages[language], total(languages));
+    if (languagePercentage === 0) {
+      additionalLanguages[language] = languages[language];
+      delete languages[language];
+    }
+  }
+  return { additionalLanguages, mostused: languages };
+};
+
 const calcLanguageInfo = (languages, total) => {
-  // prettier-ignore
-  const percentage = (sum) => Math.round(sum * 100 / total);
   let languageInfo = [];
   for (const language in languages) {
+    const languagePercentage = percentage(languages[language], total);
     languageInfo.push({
       name: language,
       sum: languages[language],
       fraction: languages[language] / total,
-      label: `${language}(${percentage(languages[language])}%)`,
+      label: `${language}(${languagePercentage}%)`,
     });
   }
   return languageInfo;
@@ -57,13 +72,16 @@ const evalLanguages = async (username) => {
   let languageData = getLanguageData(repos);
   languageData = await Promise.all(languageData);
   const languages = mergeLanguageData(languageData);
-  // prettier-ignore
-  const total = Object.values(languages).reduce((acc, curr) => acc + curr);
-  const languageInfo = calcLanguageInfo(languages, total);
+  const { additionalLanguages, mostused } = filterLanguages(languages);
+  const mostusedLanguageInfo = calcLanguageInfo(mostused, total(mostused));
+  const additionalLanguageInfo = calcLanguageInfo(additionalLanguages, total(languages));
   return {
     projects: languageData.length,
-    languages: languageInfo,
-    total,
+    languages: {
+      mostused: mostusedLanguageInfo,
+      additional: additionalLanguageInfo,
+      total: total(languages),
+    },
   };
 };
 
