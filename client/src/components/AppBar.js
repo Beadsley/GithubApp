@@ -12,6 +12,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InfoIcon from '@material-ui/icons/Info';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import config from '../config';
+import InfoDialog from './InfoDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,9 +94,9 @@ export default function SearchAppBar() {
   const handlePopoverOpen = (event, icon) => {
     setAnchorEl(event.currentTarget);
     if (icon === 'info') {
-      setPopupMessage(config.UI_STRINGS.INFO_POPOVER);
+      setPopupMessage(config.ENUMS.UI.INFO_POPOVER);
     } else if (icon === 'github') {
-      setPopupMessage(config.UI_STRINGS.GITHUB_POPOVER);
+      setPopupMessage(config.ENUMS.UI.GITHUB_POPOVER);
     }
   };
 
@@ -109,6 +110,16 @@ export default function SearchAppBar() {
       //fetch data
     }
   }
+
+  const [showInfo, setShowInfo] = React.useState(false);
+
+  const handleInfoOpen = () => {
+    setShowInfo(true);
+  };
+
+  const handleInfoClose = () => {
+    setShowInfo(false);
+  };
 
   return (
     <div className={classes.root}>
@@ -147,7 +158,7 @@ export default function SearchAppBar() {
             className={classes.icon}
           >
             <IconButton
-              onClick={'handleClick'}
+              onClick={handleInfoOpen}
               color='inherit'
               fontSize='large'
               aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -182,6 +193,7 @@ export default function SearchAppBar() {
             {popupMessage}
           </Typography>
         </Popover>
+        <InfoDialog show={showInfo} handleClose={handleInfoClose} />
       </AppBar>
     </div>
   );
