@@ -14,6 +14,7 @@ import { languageStatsLoading, hasErrored } from '../actions/languageStatsAction
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: 22,
   },
   search: {
     position: 'relative',
@@ -59,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     marginLeft: 'auto',
   },
+  ancor: {
+    color: 'white',
+  },
 }));
 
 export default function SearchAppBar() {
@@ -98,16 +102,18 @@ export default function SearchAppBar() {
     <div className={classes.root}>
       <AppBar position='static'>
         <Toolbar>
-          <IconButton
-            onClick={'handleClick'}
-            color='inherit'
-            aria-owns={open ? 'mouse-over-popover' : undefined}
-            aria-haspopup='true'
-            onMouseEnter={(e) => handlePopoverOpen(e, 'github')}
-            onMouseLeave={handlePopoverClose}
-          >
-            <GitHubIcon />
-          </IconButton>
+          <a className={classes.ancor} href={config.URL.github}>
+            <IconButton
+              onClick={'handleClick'}
+              color='inherit'
+              aria-owns={open ? 'mouse-over-popover' : undefined}
+              aria-haspopup='true'
+              onMouseEnter={(e) => handlePopoverOpen(e, 'github')}
+              onMouseLeave={handlePopoverClose}
+            >
+              <GitHubIcon />
+            </IconButton>
+          </a>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

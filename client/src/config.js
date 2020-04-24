@@ -9,6 +9,9 @@ export default {
       PIE_CHART_TITLE: 'Search a github user',
     },
   },
+  URL: {
+    github: 'https://github.com/Beadsley/GithubApp',
+  },
   data: {
     pieChart: [
       {
