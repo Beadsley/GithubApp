@@ -12,8 +12,9 @@ export const updateLanguageStats = (stats) => {
   };
 };
 
-export const hasErrored = () => {
+export const hasErrored = (boolean) => {
   return {
     type: 'HAS_ERRORED',
+    errored: boolean,
   };
 };

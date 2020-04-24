@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, IconButton, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -9,19 +9,11 @@ import InfoDialog from './InfoDialog';
 import Iconpopover from './Iconpopover';
 import { useDispatch } from 'react-redux';
 import { addUsername } from '../actions/userActions';
+import { languageStatsLoading, hasErrored } from '../actions/languageStatsActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
   },
   search: {
     position: 'relative',
@@ -99,7 +91,9 @@ export default function SearchAppBar() {
   };
 
   function keyPress(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
+      dispatch(languageStatsLoading(true));
+      dispatch(hasErrored(false));
       dispatch(addUsername(e.target.value));
     }
   }

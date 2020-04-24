@@ -1,12 +1,14 @@
 import React from 'react';
-import PrimarySearchAppBar from './components/AppBar';
+import SearchAppBar from './components/SearchAppBar';
 import './App.css';
 import PieChart from './components/PieChart';
+import ErrorAlert from './components/ErrorMessage';
 
 function App() {
   return (
     <div className='App'>
-      <PrimarySearchAppBar />
+      <SearchAppBar />
+      <ErrorAlert />
       <PieChart />
     </div>
   );
