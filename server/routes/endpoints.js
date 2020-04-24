@@ -8,9 +8,8 @@ router.get('/languages/:user', async (req, res) => {
     const languages = await evalLanguages(username);
     res.status(200).json(languages);
   } catch (err) {
-    res.status(err.response.status).send({
+    res.status(400).send({
       message: err.message,
-      status: err.response.status,
     });
   }
 });
