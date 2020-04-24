@@ -11,6 +11,7 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 import InfoIcon from '@material-ui/icons/Info';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import config from '../config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,9 +93,9 @@ export default function SearchAppBar() {
   const handlePopoverOpen = (event, icon) => {
     setAnchorEl(event.currentTarget);
     if (icon === 'info') {
-      setPopupMessage('Further information');
+      setPopupMessage(config.UI_STRINGS.INFO_POPOVER);
     } else if (icon === 'github') {
-      setPopupMessage('GitHub repository');
+      setPopupMessage(config.UI_STRINGS.GITHUB_POPOVER);
     }
   };
 
