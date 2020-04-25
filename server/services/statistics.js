@@ -1,27 +1,6 @@
-const { request } = require('./network.js');
-require('dotenv').config();
+const total = (languages) => Object.values(languages).reduce((acc, curr) => acc + curr, 0);
 
-const getGithubRepoData = async (username) => {
-  return await request({
-    method: 'get',
-    url: `https://api.github.com/users/${username}/repos`,
-    headers: {
-      Authorization: `token ${process.env.TOKEN}`,
-    },
-  });
-};
-
-const getLanguageData = (repos) => {
-  return repos.map((repo) => {
-    return request({
-      method: 'get',
-      url: repo['languages_url'],
-      headers: {
-        Authorization: `token ${process.env.TOKEN}`,
-      },
-    });
-  });
-};
+const percentage = (sum, total) => Math.round((sum * 100) / total);
 
 const mergeLanguageData = (data) => {
   let languages = {};
@@ -36,11 +15,6 @@ const mergeLanguageData = (data) => {
   });
   return languages;
 };
-
-const total = (languages) =>
-  Object.values(languages).reduce((acc, curr) => acc + curr, 0);
-
-const percentage = (sum, total) => Math.round((sum * 100) / total);
 
 const filterLanguages = (languages) => {
   let additionalLanguages = {};
@@ -68,26 +42,13 @@ const calcLanguageInfo = (languages, total) => {
   return languageInfo;
 };
 
-const evalLanguages = async (username) => {
-  const repos = await getGithubRepoData(username);
-  if (repos.length === 0) {
-    throw new Error('No repositories found');
-  }
-
-  let languageData = getLanguageData(repos);
-  languageData = await Promise.all(languageData);
-  const languages = mergeLanguageData(languageData);
+const evalLanguages = (data) => {
+  const languages = mergeLanguageData(data);
   const { additionalLanguages, mostused } = filterLanguages(languages);
   const mostusedLanguageInfo = calcLanguageInfo(mostused, total(mostused));
   const additionalLanguageInfo = calcLanguageInfo(additionalLanguages, total(languages));
-  return {
-    projects: languageData.length,
-    languages: {
-      mostused: mostusedLanguageInfo,
-      additional: additionalLanguageInfo,
-      total: total(languages),
-    },
-  };
+
+  return { mostusedLanguageInfo, additionalLanguageInfo, total: total(languages) };
 };
 
 module.exports = {
