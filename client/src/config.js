@@ -6,9 +6,13 @@ export default {
       INFO_DIALOG_TITLE: 'Information about the app',
       INFO_DIALOG_TEXT: `Ever wondered which one of your developer colleagues would be best suited to the
                           task. Now you can search for your colleague by their github username and find out
-                          what programming language they've used the most based on their github projects.` ,
+                          what programming language they've used the most based on their github projects.`,
       ERROR_ALERT_TEXT: 'Invalid github username!',
       PIE_CHART_TITLE: 'Search a github user',
+    },
+    COLOUR: {
+      GREY: '#494949',
+      WHITE: 'white',
     },
   },
   URL: {

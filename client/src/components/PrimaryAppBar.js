@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1.1em',
   },
   ancor: {
-    color: 'white',
+    color: config.ENUMS.COLOUR.WHITE,
   },
 }));
 
