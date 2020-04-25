@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Popover } from '@material-ui/core';
+import config from '../config';
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -8,11 +9,11 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(1),
-    backgroundColor: '#494949',
+    backgroundColor: config.ENUMS.COLOUR.GREY,
   },
   popText: {
     fontSize: 12,
-    color: 'white',
+    color: config.ENUMS.COLOUR.WHITE,
   },
 }));
 
