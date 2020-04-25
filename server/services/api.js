@@ -5,8 +5,9 @@ const getGithubRepoData = async (username) => {
   return await request({
     method: 'get',
     url: `https://api.github.com/users/${username}/repos`,
-    headers: {
-      Authorization: `token ${process.env.TOKEN}`,
+    params: {
+      client_id: `${process.env.CLIENT_ID}`,
+      client_secret: `${process.env.CLIENT_SECRET}`,
     },
   });
 };
@@ -16,8 +17,9 @@ const getLanguageData = (repos) => {
     return request({
       method: 'get',
       url: repo['languages_url'],
-      headers: {
-        Authorization: `token ${process.env.TOKEN}`,
+      params: {
+        client_id: `${process.env.CLIENT_ID}`,
+        client_secret: `${process.env.CLIENT_SECRET}`,
       },
     });
   });
