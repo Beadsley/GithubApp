@@ -8,28 +8,44 @@ import config from '../config';
 
 const styles = {
   root: {
-    marginTop: 22,
+    paddingTop: 22,
   },
-  legendRoot: {
+  legendRootDesktop: {
     display: 'flex',
     margin: 'auto',
     flexDirection: 'row',
   },
-  legendItem: {
+  legendRootMobile: {
+    display: 'flex',
+    margin: 'auto',
+    flexWrap: 'wrap',
+  },
+  legendItemDesktop: {
     flexDirection: 'column',
     marginLeft: '-2px',
     marginRight: '-2px',
   },
+  legendItemMobile: {
+    flexDirection: 'column',
+    marginLeft: '-2px',
+    marginRight: '-2px',
+    flex: '0 0 33.333333%',
+    width: '33%',
+  },
   legendLabel: {
     whiteSpace: 'nowrap',
   },
+  chart: {
+    height: 400
+  }
 };
 
 export default function PieChart() {
   const [chartData, setChartData] = useState(config.data.pieChart);
   const [title, setTitle] = useState(config.ENUMS.UI.PIE_CHART_TITLE);
+  const [pageWidth, setPageWidth] = useState(window.innerWidth);
   const { username } = useSelector((state) => state.user);
-  const { areLoading, data, errored } = useSelector((state) => state.languageStatistics);
+  const { areLoading, data } = useSelector((state) => state.languageStatistics);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,8 +61,8 @@ export default function PieChart() {
     }
   }, [areLoading]);
 
-  const LegendRoot = (props) => <Legend.Root {...props} style={styles.legendRoot} />;
-  const LegendItem = (props) => <Legend.Item {...props} style={styles.legendItem} />;
+  const LegendRoot = (props) => <Legend.Root {...props} style={pageWidth > 500 ? styles.legendRootDesktop : styles.legendRootMobile} />;
+  const LegendItem = (props) => <Legend.Item {...props} style={pageWidth > 500 ? styles.legendItemDesktop : styles.legendItemMobile} />;
   const LegendLabel = (props) => <Legend.Label {...props} style={styles.legendLabel} />;
 
   return (
