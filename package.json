@@ -6,7 +6,11 @@
   "scripts": {
     "test": "mocha server/**/*.test.js",
     "lint": "eslint server/**/*.js",
-    "dev": "nodemon server/index.js DEV"
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node index.js",
+    "dev": "nodemon index.js DEV"
   },
   "repository": {
     "type": "git",
