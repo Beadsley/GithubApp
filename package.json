@@ -4,9 +4,13 @@
   "description": "app using the github api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint .",
-    "dev": "nodemon server/index.js DEV"    
+    "test": "mocha server/**/*.test.js",
+    "lint": "eslint server/**/*.js",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node index.js",
+    "dev": "nodemon index.js DEV"
   },
   "repository": {
     "type": "git",
@@ -21,9 +25,12 @@
   "devDependencies": {
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
-    "nodemon": "^2.0.3"
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.3",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",

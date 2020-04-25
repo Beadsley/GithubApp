@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { getLanguageStatistics } = require('../controllers/statisticsController.js');
 
-router.get('/ping', async (req, res) => {
-  try {
-    res.status(200).json({ message: 'pong' });
-  } catch (err) {
-    res.status(400).send({ message: err });
-  }
-});
+router.get('/languages/:user', getLanguageStatistics);
 
 module.exports = router;
