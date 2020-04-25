@@ -52,12 +52,15 @@ const useStyles = makeStyles((theme) => ({
       width: '20ch',
     },
   },
-  iconContainer: {
+  infoIconContainer: {
     flex: 1,
   },
-  icon: {
+  infoIcon: {
     display: 'flex',
     marginLeft: 'auto',
+  },
+  icon: {
+    fontSize: '1.1em',
   },
   ancor: {
     color: 'white',
@@ -110,7 +113,7 @@ export default function SearchAppBar() {
               onMouseEnter={(e) => handlePopoverOpen(e, 'github')}
               onMouseLeave={handlePopoverClose}
             >
-              <GitHubIcon />
+              <GitHubIcon className={classes.icon} />
             </IconButton>
           </a>
           <div className={classes.search}>
@@ -129,7 +132,7 @@ export default function SearchAppBar() {
               onChange={handleUserInput}
             />
           </div>
-          <div className={classes.iconContainer} className={classes.icon}>
+          <div className={classes.infoIconContainer} className={classes.infoIcon}>
             <IconButton
               onClick={handleInfoOpen}
               color='inherit'
@@ -139,7 +142,7 @@ export default function SearchAppBar() {
               onMouseEnter={(e) => handlePopoverOpen(e, 'info')}
               onMouseLeave={handlePopoverClose}
             >
-              <InfoIcon />
+              <InfoIcon className={classes.icon} />
             </IconButton>
           </div>
         </Toolbar>
