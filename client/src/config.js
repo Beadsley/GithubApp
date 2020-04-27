@@ -9,6 +9,7 @@ export default {
                           what programming language they've used the most based on their github projects.`,
       ERROR_ALERT_TEXT: 'Invalid github username!',
       PIE_CHART_TITLE: 'Programming Language Distribution',
+      SEARCH_BAR_HINT: 'GitHub username…',
     },
     COLOUR: {
       GREY: '#494949',

@@ -8,7 +8,7 @@ import config from '../config';
 
 const styles = {
   root: {
-    paddingTop: 22,
+    paddingTop: 12,
   },
   legendRootDesktop: {
     display: 'flex',
@@ -35,15 +35,13 @@ const styles = {
   legendLabel: {
     whiteSpace: 'nowrap',
   },
-  chart: {
-    height: 400,
-  },
 };
 
 export default function PieChart() {
   const [chartData, setChartData] = useState(config.data.pieChart);
   const [title, setTitle] = useState(config.ENUMS.UI.PIE_CHART_TITLE);
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
+  const [rootStyles, setRootStyles] = useState(styles.root);
   const { username } = useSelector((state) => state.user);
   const { areLoading, data } = useSelector((state) => state.languageStatistics);
   const dispatch = useDispatch();
@@ -55,6 +53,11 @@ export default function PieChart() {
       .join(' ');
 
   useEffect(() => {
+    const paddingBottom = window.innerHeight - window.document.body.offsetHeight;
+    paddingBottom > 0 && setRootStyles({ paddingBottom, ...rootStyles });
+  }, []);
+
+  useEffect(() => {
     if (username !== null) {
       dispatch(languageStatistics());
     }
@@ -64,7 +67,9 @@ export default function PieChart() {
     if (areLoading === false) {
       setChartData(data.languages.mostused);
       setTitle(
-        `${capitalise(data.name)}'s most used languages from ${data.projects} ${data.projects === 1 ? 'project' : 'projects'}`
+        `${capitalise(data.name)}'s most used languages from ${data.projects} ${
+          data.projects === 1 ? 'project' : 'projects'
+        }`
       );
     }
   }, [areLoading]);
@@ -78,7 +83,7 @@ export default function PieChart() {
   const LegendLabel = (props) => <Legend.Label {...props} style={styles.legendLabel} />;
 
   return (
-    <Paper style={styles.root}>
+    <Paper style={rootStyles}>
       <Chart data={chartData}>
         <PieSeries valueField='sum' argumentField='label' />
         <Legend position='bottom' rootComponent={LegendRoot} itemComponent={LegendItem} labelComponent={LegendLabel} />

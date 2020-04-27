@@ -5,6 +5,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { useDispatch } from 'react-redux';
 import { addUsername } from '../actions/userActions';
 import { languageStatsLoading, hasErrored } from '../actions/languageStatsActions';
+import config from '../config';
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -67,7 +68,7 @@ export default function SearchBar() {
       </div>
       <InputBase
         value={userInput}
-        placeholder='Search…'
+        placeholder={config.ENUMS.UI.SEARCH_BAR_HINT}
         classes={{
           root: classes.inputRoot,
           input: classes.inputInput,
