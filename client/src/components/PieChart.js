@@ -4,6 +4,7 @@ import { Chart, PieSeries, Title, Legend } from '@devexpress/dx-react-chart-mate
 import { Animation } from '@devexpress/dx-react-chart';
 import { useSelector, useDispatch } from 'react-redux';
 import { languageStatistics } from '../actions/apiActions';
+import { Typography } from '@material-ui/core';
 import config from '../config';
 
 const styles = {
@@ -84,6 +85,9 @@ export default function PieChart() {
 
   return (
     <Paper style={rootStyles}>
+      <Typography variant='h4' gutterBottom>
+        {config.ENUMS.UI.PIE_CHART_HEADING}
+      </Typography>
       <Chart data={chartData}>
         <PieSeries valueField='sum' argumentField='label' />
         <Legend position='bottom' rootComponent={LegendRoot} itemComponent={LegendItem} labelComponent={LegendLabel} />
