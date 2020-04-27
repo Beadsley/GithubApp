@@ -27,6 +27,9 @@ const getLanguageStatistics = async (req, res) => {
   }
 };
 
+const getClientBuild = (_req, res) => res.sendFile(path.join(__dirname + '/client/build/index.html'));
+
 module.exports = {
   getLanguageStatistics,
+  getClientBuild,
 };
