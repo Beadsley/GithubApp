@@ -1,40 +1,41 @@
 const request = require('supertest');
 const assert = require('assert');
-const { app } = require('../index.js');
+const { app } = require('../../index.js');
 
 describe('The API', () => {
   it('returns language statistics based on user', async function () {
     const expected = {
-      projects: 6,
+      name: 'Dan Beadleson',
+      projects: 7,
       languages: {
         mostused: [
           {
             name: 'JavaScript',
-            sum: 54530,
-            fraction: 0.3684832922255634,
-            label: 'JavaScript(37%)',
+            sum: 81910,
+            fraction: 0.46463477585101737,
+            label: 'JavaScript(46%)',
           },
           {
             name: 'CSS',
-            sum: 3342,
-            fraction: 0.022583369936142177,
+            sum: 3738,
+            fraction: 0.021203818729472627,
             label: 'CSS(2%)',
           },
           {
             name: 'HTML',
-            sum: 1700,
-            fraction: 0.011487650775416428,
+            sum: 2228,
+            fraction: 0.012638338183323973,
             label: 'HTML(1%)',
           },
           {
             name: 'Java',
             sum: 88413,
-            fraction: 0.597445687062878,
-            label: 'Java(60%)',
+            fraction: 0.501523067236186,
+            label: 'Java(50%)',
           },
         ],
         additional: [],
-        total: 147985,
+        total: 176289,
       },
     };
     const resp = await request(app).get('/api/languages/Beadsley').expect(200);

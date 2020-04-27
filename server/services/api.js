@@ -22,7 +22,18 @@ const getLanguageData = (repos) => {
     });
   });
 };
+
+const getUserInfo = async (username) => {
+  return await request({
+    method: 'get',
+    url: `https://api.github.com/users/${username}`,
+    headers: {
+      Authorization: `Basic ${process.env.TOKEN}`,
+    },
+  });
+};
 module.exports = {
   getGithubRepoData,
   getLanguageData,
+  getUserInfo,
 };
