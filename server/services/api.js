@@ -1,5 +1,5 @@
 const { request } = require('./httpClient.js');
-require('dotenv').config();
+process.env.NODE_ENV === 'development' && require('dotenv').config();
 
 const getGithubRepoData = async (username) => {
   return await request({
@@ -22,7 +22,18 @@ const getLanguageData = (repos) => {
     });
   });
 };
+
+const getUserInfo = async (username) => {
+  return await request({
+    method: 'get',
+    url: `https://api.github.com/users/${username}`,
+    headers: {
+      Authorization: `Basic ${process.env.TOKEN}`,
+    },
+  });
+};
 module.exports = {
   getGithubRepoData,
   getLanguageData,
+  getUserInfo,
 };
