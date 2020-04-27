@@ -36,8 +36,8 @@ const styles = {
     whiteSpace: 'nowrap',
   },
   chart: {
-    height: 400
-  }
+    height: 400,
+  },
 };
 
 export default function PieChart() {
@@ -48,6 +48,12 @@ export default function PieChart() {
   const { areLoading, data } = useSelector((state) => state.languageStatistics);
   const dispatch = useDispatch();
 
+  const capitalise = (name) =>
+    name
+      .split(' ')
+      .map((word) => word[0].toUpperCase() + word.slice(1))
+      .join(' ');
+
   useEffect(() => {
     if (username !== null) {
       dispatch(languageStatistics());
@@ -57,24 +63,25 @@ export default function PieChart() {
   useEffect(() => {
     if (areLoading === false) {
       setChartData(data.languages.mostused);
-      setTitle(`${username} most used languages from ${data.projects} projects.`);
+      setTitle(
+        `${capitalise(data.name)}'s most used languages from ${data.projects} ${data.projects === 1 ? 'project' : 'projects'}`
+      );
     }
   }, [areLoading]);
 
-  const LegendRoot = (props) => <Legend.Root {...props} style={pageWidth > 500 ? styles.legendRootDesktop : styles.legendRootMobile} />;
-  const LegendItem = (props) => <Legend.Item {...props} style={pageWidth > 500 ? styles.legendItemDesktop : styles.legendItemMobile} />;
+  const LegendRoot = (props) => (
+    <Legend.Root {...props} style={pageWidth > 500 ? styles.legendRootDesktop : styles.legendRootMobile} />
+  );
+  const LegendItem = (props) => (
+    <Legend.Item {...props} style={pageWidth > 500 ? styles.legendItemDesktop : styles.legendItemMobile} />
+  );
   const LegendLabel = (props) => <Legend.Label {...props} style={styles.legendLabel} />;
 
   return (
     <Paper style={styles.root}>
       <Chart data={chartData}>
         <PieSeries valueField='sum' argumentField='label' />
-        <Legend
-          position='bottom'
-          rootComponent={LegendRoot}
-          itemComponent={LegendItem}
-          labelComponent={LegendLabel}
-        />
+        <Legend position='bottom' rootComponent={LegendRoot} itemComponent={LegendItem} labelComponent={LegendLabel} />
         <Title text={title} />
         <Animation />
       </Chart>

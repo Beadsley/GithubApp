@@ -8,7 +8,7 @@ export default {
                           task. Now you can search for your colleague by their github username and find out
                           what programming language they've used the most based on their github projects.`,
       ERROR_ALERT_TEXT: 'Invalid github username!',
-      PIE_CHART_TITLE: 'Search a github user',
+      PIE_CHART_TITLE: 'Programming Language Distribution',
     },
     COLOUR: {
       GREY: '#494949',
@@ -21,28 +21,10 @@ export default {
   data: {
     pieChart: [
       {
-        name: 'Python',
-        sum: 54530,
-        fraction: 0.3684832922255634,
-        label: 'Python(37%)',
-      },
-      {
-        name: 'CSS',
-        sum: 3342,
-        fraction: 0.022583369936142177,
-        label: 'CSS(2%)',
-      },
-      {
         name: 'JavaScript',
-        sum: 17000,
-        fraction: 0.011487650775416428,
-        label: 'HTML(1%)',
-      },
-      {
-        name: 'Java',
-        sum: 88413,
-        fraction: 0.597445687062878,
-        label: 'Java(60%)',
+        sum: 100,
+        fraction: 1,
+        label: 'JavaScript(100%)',
       },
     ],
   },
