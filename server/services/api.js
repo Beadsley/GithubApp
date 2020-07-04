@@ -31,11 +31,12 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
 });
 
-const query = gql`
+const query = (username) => gql`
   {
-    user(login: "beadsley") {
+    user(login: "${username}") {
       name
       repositories(first: 100) {
+        totalCount
         nodes {
           databaseId
           isPrivate
@@ -55,9 +56,11 @@ const query = gql`
   }
 `;
 
-const testy = async () => {
-  const response = await client.query({ query });
-  console.log(response);
+const testy = async (username) => {
+  const response = await client.query({ query: query(username) });
+  console.log('RESP', response, '\n');
+
+  return response;
 };
 
 const getGithubRepoData = async (username) => {
@@ -65,7 +68,7 @@ const getGithubRepoData = async (username) => {
     method: 'get',
     url: `https://api.github.com/users/${username}/repos`,
     headers: {
-      Authorization: `Basic ${process.env.TOKEN}`,
+      Authorization: `Basic ${process.env.REST_TOKEN}`,
     },
   });
 };
@@ -76,7 +79,7 @@ const getLanguageData = (repos) => {
       method: 'get',
       url: repo['languages_url'],
       headers: {
-        Authorization: `Basic ${process.env.TOKEN}`,
+        Authorization: `Basic ${process.env.REST_TOKEN}`,
       },
     });
   });
@@ -87,7 +90,7 @@ const getUserInfo = async (username) => {
     method: 'get',
     url: `https://api.github.com/users/${username}`,
     headers: {
-      Authorization: `Basic ${process.env.TOKEN}`,
+      Authorization: `Basic ${process.env.REST_TOKEN}`,
     },
   });
 };
