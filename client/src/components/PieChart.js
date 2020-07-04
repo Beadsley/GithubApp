@@ -6,12 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLazyQuery } from '@apollo/client';
 import { LANGUAGES } from '../graphQL/queries';
 import { Typography } from '@material-ui/core';
-import { hasErrored } from "../actions/userActions";
+import { hasErrored } from '../store/actions/userActions';
 import config from '../config';
 
 const styles = {
   root: {
     paddingTop: 12,
+    textAlign: 'center',
   },
   legendRootDesktop: {
     display: 'flex',
@@ -61,14 +62,12 @@ export default function PieChart() {
   }, []);
 
   useEffect(() => {
-    if (username !== null) {
+    if (username) {
       getLanguages({ variables: { username: username } });
     }
   }, [username]);
 
   useEffect(() => {
-    console.log(result);
-
     if (result.data) {
       setChartData(result.data.languageStatistics.languages.mostused);
       setTitle(
