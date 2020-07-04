@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
 import { IconButton, Collapse } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import config from '../config';
-import { hasErrored } from '../actions/languageStatsActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,13 +16,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ErrorAlert() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const { errored } = useSelector((state) => state.languageStatistics);
-  const [open, setOpen] = React.useState(errored);
+  const { error, errorMessage } = useSelector((state) => state.user.data);
+  const [open, setOpen] = useState(error);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    errored ? setOpen(true) : setOpen(false);
-  }, [errored]);
+    if (error) {
+      setOpen(true);
+      setMessage(errorMessage);
+    } else {
+      setOpen(errorMessage);
+      setMessage(null);
+    }
+  }, [error]);
 
   return (
     <div className={classes.root}>
@@ -38,14 +42,13 @@ export default function ErrorAlert() {
               size='small'
               onClick={() => {
                 setOpen(false);
-                dispatch(hasErrored(false));
               }}
             >
               <CloseIcon fontSize='inherit' />
             </IconButton>
           }
         >
-          {config.ENUMS.UI.ERROR_ALERT_TEXT}
+          {message}
         </Alert>
       </Collapse>
     </div>

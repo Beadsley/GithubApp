@@ -3,8 +3,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { useDispatch } from 'react-redux';
-import { addUsername } from '../actions/userActions';
-import { hasErrored } from '../actions/languageStatsActions';
+import { addUsername, hasErrored } from '../actions/userActions';
 import config from '../config';
 
 const useStyles = makeStyles((theme) => ({

@@ -1,14 +1,29 @@
 import { combineReducers } from 'redux';
 
-export function addUsername(state = null, action) {
+const initialState = {
+  error: false,
+  username: 'undefined',
+};
+
+export function userReducer(state = initialState, action) {
   switch (action.type) {
     case 'ADD_USERNAME':
-      return action.username;
+      return {
+        ...state,
+        error: false,
+        username: action.username,
+      };
+    case 'ERROR':
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.message,
+      };
     default:
       return state;
   }
 }
 
 export default combineReducers({
-  username: addUsername,
+  data: userReducer,
 });

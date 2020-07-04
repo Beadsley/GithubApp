@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { Chart, PieSeries, Title, Legend } from '@devexpress/dx-react-chart-material-ui';
 import { Animation } from '@devexpress/dx-react-chart';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLazyQuery } from '@apollo/client';
 import { LANGUAGES } from '../graphQL/queries';
 import { Typography } from '@material-ui/core';
+import { hasErrored } from "../actions/userActions";
 import config from '../config';
 
 const styles = {
@@ -44,8 +45,9 @@ export default function PieChart() {
   const [title, setTitle] = useState(config.ENUMS.UI.PIE_CHART_TITLE);
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
   const [rootStyles, setRootStyles] = useState(styles.root);
-  const { username } = useSelector((state) => state.user);
+  const { username } = useSelector((state) => state.user.data);
   const [getLanguages, result] = useLazyQuery(LANGUAGES);
+  const dispatch = useDispatch();
 
   const capitalise = (name) =>
     name
@@ -59,12 +61,14 @@ export default function PieChart() {
   }, []);
 
   useEffect(() => {
-    if (username !== null) {      
+    if (username !== null) {
       getLanguages({ variables: { username: username } });
     }
   }, [username]);
 
   useEffect(() => {
+    console.log(result);
+
     if (result.data) {
       setChartData(result.data.languageStatistics.languages.mostused);
       setTitle(
@@ -72,6 +76,8 @@ export default function PieChart() {
           result.data.languageStatistics.projects
         } ${result.data.languageStatistics.projects === 1 ? 'project' : 'projects'}`
       );
+    } else if (result.error) {
+      dispatch(hasErrored(result.error.message));
     }
   }, [result]);
 
