@@ -1,19 +1,41 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const cors = require('cors');
-const routes = require('./server/routes/endpoints.js');
-const app = express();
+const { ApolloServer, gql, UserInputError, AuthenticationError, PubSub } = require('apollo-server');
+const { getLanguageStatistics } = require('./server/controllers/statisticsController');
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use('/api', routes);
-process.env.NODE_ENV === 'production' && app.use(express.static(path.join(__dirname, 'client/build')));
+const typeDefs = gql`
+  type Language {
+    name: String!
+    sum: Int!
+    fraction: Float!
+    label: String!
+  }
+  type Languages {
+    mostused: [Language!]!
+    additional: [Language!]!
+    total: Int!
+  }
+  type User {
+    name: String!
+    projects: Int!
+    languages: Languages!
+  }
+  type Query {
+    languageStatistics(username: String!): User!
+  }
+`;
 
-app.listen(PORT, () => {
-  console.log(`running om port: ${PORT}`);
+const resolvers = {
+  Query: {
+    languageStatistics: getLanguageStatistics,
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
 });
 
-module.exports.app = app;
+server.listen(PORT).then(({ url }) => {
+  console.log(`Server ready at ${url}`);
+});
+// module.exports.app = app;
