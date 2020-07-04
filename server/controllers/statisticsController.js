@@ -1,16 +1,12 @@
 const { evalLanguages } = require('../services/statistics.js');
-const { getGithubRepoData, getLanguageData, getUserInfo, testy } = require('../services/api.js');
 const { ENUMS } = require('../config/config.js');
+const { getLanguageData } = require('../services/api');
 
 const getLanguageStatistics = async (_root, args) => {
   try {
     const username = args.username;
-    const { data } = await testy(username);
-    // console.log(data);
+    const { data } = await getLanguageData(username);
     const repos = data.user.repositories.nodes;
-    // const repos = await getGithubRepoData(username);
-    // if (repos.length === 0) throw new Error(ENUMS.ERRORMESSAGE.NO_REPOS);
-    // const languageData = await Promise.all(getLanguageData(data.user.repositories.nodes));
     const { mostusedLanguageInfo, additionalLanguageInfo, total } = evalLanguages(repos);
 
     return {
@@ -23,9 +19,7 @@ const getLanguageStatistics = async (_root, args) => {
       },
     };
   } catch (err) {
-    return {
-      error: err.message,
-    };
+    throw err;
   }
 };
 

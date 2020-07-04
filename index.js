@@ -1,4 +1,4 @@
-const { ApolloServer, gql, UserInputError, AuthenticationError, PubSub } = require('apollo-server');
+const { ApolloServer, gql } = require('apollo-server');
 const { getLanguageStatistics } = require('./server/controllers/statisticsController');
 const PORT = process.env.PORT || 8080;
 
@@ -20,7 +20,7 @@ const typeDefs = gql`
     languages: Languages!
   }
   type Query {
-    languageStatistics(username: String!): User!
+    languageStatistics(username: String!): User
   }
 `;
 
@@ -38,4 +38,3 @@ const server = new ApolloServer({
 server.listen(PORT).then(({ url }) => {
   console.log(`Server ready at ${url}`);
 });
-// module.exports.app = app;
