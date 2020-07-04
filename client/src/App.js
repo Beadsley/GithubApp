@@ -1,6 +1,5 @@
 import React from 'react';
 import PrimaryAppBar from './components/PrimaryAppBar';
-import './App.css';
 import PieChart from './components/PieChart';
 import ErrorAlert from './components/ErrorMessage';
 

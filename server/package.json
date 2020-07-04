@@ -6,13 +6,13 @@
   "scripts": {
     "test": "mocha server/**/*.test.js",
     "lint": "eslint server/**/*.js",
-    "build": "cd client && npm run build",
-    "install-client": "cd client && npm install",
+    "build": "cd .. && cd client && npm run build",
+    "install-client": "cd .. && cd client && npm install",
     "install-project": "npm install && npm run install-client",
     "heroku-postbuild": "npm run install-client && npm run build",
     "start": "NODE_ENV=production node index.js",
-    "client": "cd client && npm start",
-    "dev": "concurrently -n 'server,client' -c 'red,green' \"NODE_ENV=development nodemon index.js\" \"npm run client\""
+    "client": "cd .. && cd client && npm start",
+    "dev": "concurrently -n 'server,client' -c 'red,green' \"NODE_ENV=development nodemon server/index.js\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -33,10 +33,11 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-http-context": "^1.2.3"
+    "@apollo/client": "^3.0.0-rc.10",
+    "@apollo/link-ws": "^2.0.0-beta.3",
+    "apollo-link-context": "^1.0.20",
+    "apollo-server": "^2.15.1",
+    "cross-fetch": "^3.0.5",
+    "graphql": "^15.2.0"
   }
 }

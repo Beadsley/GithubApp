@@ -3,13 +3,16 @@ import Paper from '@material-ui/core/Paper';
 import { Chart, PieSeries, Title, Legend } from '@devexpress/dx-react-chart-material-ui';
 import { Animation } from '@devexpress/dx-react-chart';
 import { useSelector, useDispatch } from 'react-redux';
-import { languageStatistics } from '../actions/apiActions';
+import { useLazyQuery } from '@apollo/client';
+import { LANGUAGES } from '../graphQL/queries';
 import { Typography } from '@material-ui/core';
+import { hasErrored } from '../store/actions/userActions';
 import config from '../config';
 
 const styles = {
   root: {
     paddingTop: 12,
+    textAlign: 'center',
   },
   legendRootDesktop: {
     display: 'flex',
@@ -43,8 +46,8 @@ export default function PieChart() {
   const [title, setTitle] = useState(config.ENUMS.UI.PIE_CHART_TITLE);
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
   const [rootStyles, setRootStyles] = useState(styles.root);
-  const { username } = useSelector((state) => state.user);
-  const { areLoading, data } = useSelector((state) => state.languageStatistics);
+  const { username } = useSelector((state) => state.user.data);
+  const [getLanguages, result] = useLazyQuery(LANGUAGES);
   const dispatch = useDispatch();
 
   const capitalise = (name) =>
@@ -59,21 +62,23 @@ export default function PieChart() {
   }, []);
 
   useEffect(() => {
-    if (username !== null) {
-      dispatch(languageStatistics());
+    if (username) {
+      getLanguages({ variables: { username: username } });
     }
   }, [username]);
 
   useEffect(() => {
-    if (areLoading === false) {
-      setChartData(data.languages.mostused);
+    if (result.data) {
+      setChartData(result.data.languageStatistics.languages.mostused);
       setTitle(
-        `${capitalise(data.name)}'s most used languages from ${data.projects} ${
-          data.projects === 1 ? 'project' : 'projects'
-        }`
+        `${capitalise(result.data.languageStatistics.name)}'s most used languages from ${
+          result.data.languageStatistics.projects
+        } ${result.data.languageStatistics.projects === 1 ? 'project' : 'projects'}`
       );
+    } else if (result.error) {
+      dispatch(hasErrored(result.error.message));
     }
-  }, [areLoading]);
+  }, [result]);
 
   const LegendRoot = (props) => (
     <Legend.Root {...props} style={pageWidth > 500 ? styles.legendRootDesktop : styles.legendRootMobile} />

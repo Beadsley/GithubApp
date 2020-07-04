@@ -2,16 +2,29 @@ const total = (languages) => Object.values(languages).reduce((acc, curr) => acc 
 
 const percentage = (sum, total) => Math.round((sum * 100) / total);
 
+const formatData = (data) => {
+  return data.map((repo) => {
+    return {
+      languages: repo.languages.edges.map((language) => {
+        return {
+          size: language.size,
+          name: language.node.name,
+        };
+      }),
+    };
+  });
+};
+
 const mergeLanguageData = (data) => {
   let languages = {};
   data.forEach((repo) => {
-    for (const language in repo) {
-      if (languages[language] === undefined) {
-        languages[language] = repo[language];
+    repo.languages.forEach((language) => {
+      if (languages[language.name] === undefined) {
+        languages[language.name] = language.size;
       } else {
-        languages[language] = repo[language] + languages[language];
+        languages[language.name] = language.size + languages[language.name];
       }
-    }
+    });
   });
   return languages;
 };
@@ -43,7 +56,8 @@ const calcLanguageInfo = (languages, total) => {
 };
 
 const evalLanguages = (data) => {
-  const languages = mergeLanguageData(data);
+  const forMattedData = formatData(data);
+  const languages = mergeLanguageData(forMattedData);
   const { additionalLanguages, mostused } = filterLanguages(languages);
   const mostusedLanguageInfo = calcLanguageInfo(mostused, total(mostused));
   const additionalLanguageInfo = calcLanguageInfo(additionalLanguages, total(languages));

@@ -3,8 +3,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { useDispatch } from 'react-redux';
-import { addUsername } from '../actions/userActions';
-import { languageStatsLoading, hasErrored } from '../actions/languageStatsActions';
+import { addUsername, hasErrored } from '../store/actions/userActions';
 import config from '../config';
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +54,7 @@ export default function SearchBar() {
 
   function handleKeyPress(e) {
     if (e.keyCode === 13) {
-      dispatch(languageStatsLoading(true));
+      // dispatch(languageStatsLoading(true));
       dispatch(hasErrored(false));
       dispatch(addUsername(e.target.value));
       setUserInput('');
