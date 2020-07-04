@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { Chart, PieSeries, Title, Legend } from '@devexpress/dx-react-chart-material-ui';
 import { Animation } from '@devexpress/dx-react-chart';
-import { useSelector, useDispatch } from 'react-redux';
-import { languageStatistics } from '../actions/apiActions';
+import { useSelector } from 'react-redux';
+import { useLazyQuery } from '@apollo/client';
+import { LANGUAGES } from '../graphQL/queries';
 import { Typography } from '@material-ui/core';
 import config from '../config';
 
@@ -44,8 +45,7 @@ export default function PieChart() {
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
   const [rootStyles, setRootStyles] = useState(styles.root);
   const { username } = useSelector((state) => state.user);
-  const { areLoading, data } = useSelector((state) => state.languageStatistics);
-  const dispatch = useDispatch();
+  const [getLanguages, result] = useLazyQuery(LANGUAGES);
 
   const capitalise = (name) =>
     name
@@ -59,21 +59,21 @@ export default function PieChart() {
   }, []);
 
   useEffect(() => {
-    if (username !== null) {
-      dispatch(languageStatistics());
+    if (username !== null) {      
+      getLanguages({ variables: { username: username } });
     }
   }, [username]);
 
   useEffect(() => {
-    if (areLoading === false) {
-      setChartData(data.languages.mostused);
+    if (result.data) {
+      setChartData(result.data.languageStatistics.languages.mostused);
       setTitle(
-        `${capitalise(data.name)}'s most used languages from ${data.projects} ${
-          data.projects === 1 ? 'project' : 'projects'
-        }`
+        `${capitalise(result.data.languageStatistics.name)}'s most used languages from ${
+          result.data.languageStatistics.projects
+        } ${result.data.languageStatistics.projects === 1 ? 'project' : 'projects'}`
       );
     }
-  }, [areLoading]);
+  }, [result]);
 
   const LegendRoot = (props) => (
     <Legend.Root {...props} style={pageWidth > 500 ? styles.legendRootDesktop : styles.legendRootMobile} />
