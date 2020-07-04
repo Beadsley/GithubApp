@@ -1,0 +1,8 @@
+# config
+.env
+.eslintrc.json
+
+# dependencies
+/node_modules
+
+

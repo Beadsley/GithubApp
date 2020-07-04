@@ -1,5 +1,3 @@
-const nodemon = require('nodemon');
-
 const total = (languages) => Object.values(languages).reduce((acc, curr) => acc + curr, 0);
 
 const percentage = (sum, total) => Math.round((sum * 100) / total);

@@ -1,5 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server');
-const { getLanguageStatistics } = require('./server/controllers/statisticsController');
+const { getLanguageStatistics } = require('./controllers/statisticsController');
 const PORT = process.env.PORT || 8080;
 
 const typeDefs = gql`
