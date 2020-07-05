@@ -65,8 +65,9 @@ export default function PrimaryAppBar() {
             </IconButton>
           </a>
           <SearchBar />
-          <div className={`${classes.infoIconContainer} ${classes.infoIcon}`}>
+          <div className={classes.infoIconContainer}>
             <IconButton
+              className={classes.infoIcon}
               onClick={handleInfoOpen}
               color='inherit'
               fontSize='large'
