@@ -1,14 +1,14 @@
-# React app using the GitHub API
+# React app using the GitHub GraphQL API
 Application calculates the main programming languages used by a specified github user. [Try it out!](https://github-language-app.herokuapp.com/)
 
 ## Instructions
-Run the following commands in the projects **root** directory. 
+Run the following commands in the projects **server** directory. 
 1) `npm run install-project`
 
 2) `npm run dev`
 
 ## Notice
-Due to the Githubs api rate limit, a limited number of requests may be made when running the application in development. To overcome this issue, you can add a Github OAuth token to the .env file.  [More info!](https://developer.github.com/v3/#oauth2-token-sent-in-a-header)
+In order to use the GitHub GraphQL api an access token must be aquired and added to the .env file within the project.
 
 ## Technologies
 ### Front-end
@@ -17,6 +17,6 @@ Due to the Githubs api rate limit, a limited number of requests may be made when
 * Material-UI
 
 ### Backend-end
-* Express
+* GraphQL
 * Node JS
 
