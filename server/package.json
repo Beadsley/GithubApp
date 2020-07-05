@@ -10,9 +10,9 @@
     "install-client": "cd .. && cd client && npm install",
     "install-project": "npm install && npm run install-client",
     "heroku-postbuild": "npm run install-client && npm run build",
-    "start": "NODE_ENV=production node index.js",
+    "start": "NODE_ENV=production node src/index.js",
     "client": "cd .. && cd client && npm start",
-    "dev": "concurrently -n 'server,client' -c 'red,green' \"NODE_ENV=development nodemon server/index.js\" \"npm run client\""
+    "dev": "concurrently -n 'server,client' -c 'red,green' \"NODE_ENV=development nodemon src/index.js\" \"npm run client\""
   },
   "repository": {
     "type": "git",
