@@ -19,4 +19,5 @@ In order to use the GitHub GraphQL api an access token must be aquired and added
 ### Backend-end
 * GraphQL
 * Node JS
+* Express
 
