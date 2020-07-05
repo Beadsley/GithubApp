@@ -1,5 +1,4 @@
 const { evalLanguages } = require('../services/statistics.js');
-const { ENUMS } = require('../config/config.js');
 const { getLanguageData } = require('../services/api');
 
 const getLanguageStatistics = async (_root, args) => {
@@ -7,6 +6,9 @@ const getLanguageStatistics = async (_root, args) => {
     const username = args.username;
     const { data } = await getLanguageData(username);
     const repos = data.user.repositories.nodes;
+    if (repos.length === 0) {
+      throw new Error(`${args.username} has no repositories`);
+    }
     const { mostusedLanguageInfo, additionalLanguageInfo, total } = evalLanguages(repos);
 
     return {
@@ -23,9 +25,6 @@ const getLanguageStatistics = async (_root, args) => {
   }
 };
 
-const getClientBuild = (_req, res) => res.sendFile(path.join(__dirname + '/client/build/index.html'));
-
 module.exports = {
   getLanguageStatistics,
-  getClientBuild,
 };

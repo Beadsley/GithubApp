@@ -44,7 +44,7 @@ const styles = {
 export default function PieChart() {
   const [chartData, setChartData] = useState(config.data.pieChart);
   const [title, setTitle] = useState(config.ENUMS.UI.PIE_CHART_TITLE);
-  const [pageWidth, setPageWidth] = useState(window.innerWidth);
+  const pageWidth = window.innerWidth;
   const [rootStyles, setRootStyles] = useState(styles.root);
   const { username } = useSelector((state) => state.user.data);
   const [getLanguages, result] = useLazyQuery(LANGUAGES);
