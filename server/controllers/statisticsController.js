@@ -6,6 +6,10 @@ const getLanguageStatistics = async (_root, args) => {
     const username = args.username;
     const { data } = await getLanguageData(username);
     const repos = data.user.repositories.nodes;
+    console.log(repos.length);
+    if (repos.length === 0) {
+      throw new Error(`${args.username} has no repositories`);
+    }
     const { mostusedLanguageInfo, additionalLanguageInfo, total } = evalLanguages(repos);
 
     return {
