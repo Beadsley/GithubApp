@@ -6,9 +6,9 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import config from '../config';
 import InfoDialog from './InfoDialog';
 import Iconpopover from './Iconpopover';
-import SearchBar from "./SearchBar";
+import SearchBar from './SearchBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
   },
@@ -65,7 +65,7 @@ export default function PrimaryAppBar() {
             </IconButton>
           </a>
           <SearchBar />
-          <div className={classes.infoIconContainer} className={classes.infoIcon}>
+          <div className={`${classes.infoIconContainer} ${classes.infoIcon}`}>
             <IconButton
               onClick={handleInfoOpen}
               color='inherit'
@@ -79,11 +79,7 @@ export default function PrimaryAppBar() {
             </IconButton>
           </div>
         </Toolbar>
-        <Iconpopover
-          anchorEl={anchorEl}
-          handlePopoverClose={handlePopoverClose}
-          popoverMessage={popoverMessage}
-        />
+        <Iconpopover anchorEl={anchorEl} handlePopoverClose={handlePopoverClose} popoverMessage={popoverMessage} />
         <InfoDialog show={showInfo} handleClose={handleInfoClose} />
       </AppBar>
     </div>

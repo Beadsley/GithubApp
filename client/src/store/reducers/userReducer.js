@@ -5,7 +5,7 @@ const initialState = {
   username: undefined,
 };
 
-export function userReducer(state = initialState, action) {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_USERNAME':
       return {
@@ -22,7 +22,7 @@ export function userReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
 
 export default combineReducers({
   data: userReducer,
