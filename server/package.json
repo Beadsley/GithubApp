@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha server/**/*.test.js",
-    "lint": "eslint server/**/*.js",
+    "lint": "eslint .",
     "build": "cd .. && cd client && npm run build",
     "install-client": "cd .. && cd client && npm install",
     "install-project": "npm install && npm run install-client",

@@ -13,7 +13,7 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const httpLink = new HttpLink({ uri: `https://api.github.com/graphql`, fetch });
+const httpLink = new HttpLink({ uri: 'https://api.github.com/graphql', fetch });
 
 const request = new ApolloClient({
   cache: new InMemoryCache(),
